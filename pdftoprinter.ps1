@@ -49,13 +49,24 @@ function Check-Folder()
 
     Write-Output("File  found: " + $file.Fullname)
 
-    Move-Item -Path $file.Fullname -Destination ($workpath)
+    Move-Item -Path $file.Fullname -Destination ($workpath) -Force
         
     $args = "/T " + ($workpath + "/" + $file.Name + " " + $printer)
 
-    Start-Process $adobeStart -ArgumentList  $args
-   
-   }
+    $process = Start-Process $adobeStart -ArgumentList  $args -Passthru
+    Write-Host("Process started." + $process)
+
+    sleep 10;
+    try 
+    {
+      Stop-Process -InputObject $process
+    }
+    catch
+    {
+      Write-Host("Process was not killed.")
+    }
+
+  }
 
 }
 
