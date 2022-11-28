@@ -54,9 +54,10 @@ function Check-Folder()
     $args = "/T " + ($workpath + "/" + $file.Name + " " + $printer)
 
     $process = Start-Process $adobeStart -ArgumentList  $args -Passthru
-    Write-Host("Process started." + $process)
+    Write-Host("Process started: " + $process)
 
-    sleep 10;
+    sleep 5;
+
     try 
     {
       Stop-Process -InputObject $process
