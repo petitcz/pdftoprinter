@@ -44,20 +44,21 @@ function Check-Folder()
   foreach($file in $files)
   {
 
-        
+    Write-Output("File  found: " + $file.Fullname)    
     Write-Output("Moving into working directory")        
-
-    Write-Output("File  found: " + $file.Fullname)
-
+    
     Move-Item -Path $file.Fullname -Destination ($workpath) -Force
-        
-    $args = "/T " + ($workpath + "/" + $file.Name + " " + $printer)
+
+    $fileToPrint = ($workpath + "/" + $file.Name)
+
+    $args = "/T " + ("""$fileToPrint""" + " " + """$printer""")
 
     $process = Start-Process $adobeStart -ArgumentList  $args -Passthru
     Write-Host("Process started: " + $process)
+    Write-Host("with arguments: " + $args)
 
     sleep 5;
-
+    
     try 
     {
       Stop-Process -InputObject $process
@@ -87,7 +88,6 @@ Write-Output("Waiting ....")
 Write-Enter;
 
 while ($true) {
-
   
     sleep 5;
     Check-Folder;
